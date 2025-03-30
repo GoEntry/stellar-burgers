@@ -1,28 +1,29 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import {
-  ConstructorPage,
-  Feed,
-  Login,
-  Register,
-  ForgotPassword,
-  ResetPassword,
-  Profile,
-  ProfileOrders,
-  NotFound404
-} from '@pages';
-import { AppHeader } from '@components';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { ConstructorPage, Feed, Login, Register, ForgotPassword, ResetPassword, Profile, ProfileOrders, NotFound404 } from '@pages';
+import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import { GuestRoute } from '../route-protectors/GuestRoute';
 import { ProtectedRoute } from '../route-protectors/ProtectedRoute';
-import { Modal } from '../modal';
-import { OrderInfo } from '../order-info';
-import { IngredientDetails } from '../ingredient-details';
 import styles from './app.module.css';
+import { useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/ingredientsSlice';
+import { fetchUser } from '../../services/authSlice';
 
-const App = () => (
-  <Router>
+const App = () => {
+  const appDispatch = useDispatch();
+  const navigate = useNavigate();
+  const currentPath = useLocation();
+  const modalParentPath = currentPath.state?.background;
+
+  useEffect(() => {
+    appDispatch(fetchUser());
+    appDispatch(fetchIngredients());
+  }, [appDispatch]);
+
+  return (
     <div className={styles.app}>
       <AppHeader />
-      <Routes>
+      <Routes location={modalParentPath || currentPath}>
         <Route path='/' element={<ConstructorPage />} />
         <Route path='/feed' element={<Feed />} />
         <Route
@@ -73,34 +74,60 @@ const App = () => (
             </ProtectedRoute>
           }
         />
-        <Route
-          path='/feed/:number'
-          element={
-            <Modal title='Информация о заказе' onClose={() => {}}>
-              <OrderInfo />
-            </Modal>
-          }
-        />
-        <Route
-          path='/ingredients/:id'
-          element={
-            <Modal title='Детали ингредиента' onClose={() => {}}>
-              <IngredientDetails />
-            </Modal>
-          }
-        />
-        <Route
-          path='/profile/orders/:number'
-          element={
-            <Modal title='Информация о заказе' onClose={() => {}}>
-              <OrderInfo />
-            </Modal>
-          }
-        />
         <Route path='*' element={<NotFound404 />} />
+        <Route path='/ingredients/:id' element={<IngredientDetails />} />
+        <Route path='/feed/:number' element={<OrderInfo />} />
+      </Routes>
+
+      {/* Модальные окна */}
+      <Routes>
+        {modalParentPath && (
+          <>
+            <Route
+              path='/ingredients/:id'
+              element={
+                <Modal
+                  title='Детали ингредиента'
+                  onClose={() => navigate(-1)}
+                >
+                  <IngredientDetails />
+                </Modal>
+              }
+            />
+            <Route
+              path='/feed/:number'
+              element={
+                <Modal
+                  title='Информация о заказе'
+                  onClose={() => navigate(-1)}
+                >
+                  <OrderInfo />
+                </Modal>
+              }
+            />
+            <Route
+              path='/profile/orders/:number'
+              element={
+                <Modal
+                  title='Информация о заказе'
+                  onClose={() => navigate(-1)}
+                >
+                  <ProtectedRoute>
+                    <OrderInfo />
+                  </ProtectedRoute>
+                </Modal>
+              }
+            />
+          </>
+        )}
       </Routes>
     </div>
+  );
+};
+
+const AppContainer = () => (
+  <Router>
+    <App />
   </Router>
 );
-
-export default App;
+export default AppContainer;

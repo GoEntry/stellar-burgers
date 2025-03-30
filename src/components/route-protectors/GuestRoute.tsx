@@ -1,14 +1,24 @@
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
+import { Preloader } from '@ui';
+import { useSelector } from '../../services/store';
+import { selectUser, selectAuthStatus } from '../../services/authSlice';
 
-export const GuestRoute = ({ children }: { children: JSX.Element }) => {
-  const isAuthenticated = false;
-  const location = useLocation();
-
-  if (isAuthenticated) {
-    return <Navigate to='/profile' state={{ from: location }} replace />;
-  }
-
-  return children;
+type GuestRouteProps = {
+  children: React.ReactElement;
 };
 
-export default GuestRoute;
+export const GuestRoute = ({ children }: GuestRouteProps) => {
+  const location = useLocation();
+  const user = useSelector(selectUser);
+  const authStatus = useSelector(selectAuthStatus);
+
+  if (authStatus === undefined) {
+    return <Preloader />;
+  }
+  if (user) {
+    const from = location.state?.from || { pathname: '/' };
+    return <Navigate replace to={from} />;
+  }
+  return children;
+};

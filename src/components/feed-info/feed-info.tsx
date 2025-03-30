@@ -1,7 +1,9 @@
-import { FC } from 'react';
-
+import { FC, useEffect } from 'react';
 import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
+import { useSelector, useDispatch } from '../../services/store';
+import { fetchIngredients } from '../../services/ingredientsSlice';
+import { selectFeed, selectTotals, selectUserOrders } from '../../services/ordersSlice';
 
 const getOrders = (orders: TOrder[], status: string): number[] =>
   orders
@@ -11,18 +13,27 @@ const getOrders = (orders: TOrder[], status: string): number[] =>
 
 export const FeedInfo: FC = () => {
   /** TODO: взять переменные из стора */
-  const orders: TOrder[] = [];
-  const feed = {};
+  const feedDispatch = useDispatch();
+  // Получаем данные из хранилища
+  const feedOrders = useSelector(selectFeed);
+  const userOrders = useSelector(selectUserOrders);
+  const { total, totalToday } = useSelector(selectTotals);
+  // Объединяем заказы из разных источников
+  const allOrders = [...feedOrders, ...userOrders];
+  // Фильтруем заказы по статусам
+  const readyOrders = getOrders(allOrders, 'done');
+  const pendingOrders = getOrders(allOrders, 'pending');
 
-  const readyOrders = getOrders(orders, 'done');
-
-  const pendingOrders = getOrders(orders, 'pending');
+  // Загружаем ингредиенты при монтировании компонента
+  useEffect(() => {
+    feedDispatch(fetchIngredients());
+  }, [feedDispatch]);
 
   return (
     <FeedInfoUI
       readyOrders={readyOrders}
       pendingOrders={pendingOrders}
-      feed={feed}
+      feed={{ total, totalToday }}
     />
   );
 };
