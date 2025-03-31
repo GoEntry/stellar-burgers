@@ -7,9 +7,11 @@ import { selectConstructor } from '../../services/constructorSlice';
 
 export const IngredientsCategory = forwardRef<
   HTMLUListElement,
-  TIngredientsCategoryProps>(({ title, titleRef, ingredients }, ref) => {
+  TIngredientsCategoryProps
+>(({ title, titleRef, ingredients }, ref) => {
   // Используем стабильный селектор
-  const { bun, ingredients: constructorIngredients } = useSelector(selectConstructor);
+  const { bun, ingredients: constructorIngredients } =
+    useSelector(selectConstructor);
   const ingredientsCounters = useMemo(() => {
     const counters: Record<string, number> = {};
     constructorIngredients?.forEach((ingredient: TIngredient) => {

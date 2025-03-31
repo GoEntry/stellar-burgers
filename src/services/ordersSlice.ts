@@ -1,5 +1,10 @@
 import { createAsyncThunk, createSlice, AnyAction } from '@reduxjs/toolkit';
-import { getFeedsApi, getOrderByNumberApi, getOrdersApi, orderBurgerApi } from '@api';
+import {
+  getFeedsApi,
+  getOrderByNumberApi,
+  getOrdersApi,
+  orderBurgerApi
+} from '@api';
 import { TOrder } from '@utils-types';
 
 type TOrdersState = {
@@ -94,4 +99,10 @@ export const ordersSlice = createSlice({
 });
 
 export const { resetCurrent } = ordersSlice.actions;
-export const { selectCurrentOrder, selectFeed, selectUserOrders, selectTotals, selectLoading } = ordersSlice.selectors;
+export const {
+  selectCurrentOrder,
+  selectFeed,
+  selectUserOrders,
+  selectTotals,
+  selectLoading
+} = ordersSlice.selectors;

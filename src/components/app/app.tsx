@@ -1,6 +1,22 @@
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+  useNavigate
+} from 'react-router-dom';
 import { useEffect } from 'react';
-import { ConstructorPage, Feed, Login, Register, ForgotPassword, ResetPassword, Profile, ProfileOrders, NotFound404 } from '@pages';
+import {
+  ConstructorPage,
+  Feed,
+  Login,
+  Register,
+  ForgotPassword,
+  ResetPassword,
+  Profile,
+  ProfileOrders,
+  NotFound404
+} from '@pages';
 import { AppHeader, Modal, OrderInfo, IngredientDetails } from '@components';
 import { GuestRoute } from '../route-protectors/GuestRoute';
 import { ProtectedRoute } from '../route-protectors/ProtectedRoute';
@@ -86,10 +102,7 @@ const App = () => {
             <Route
               path='/ingredients/:id'
               element={
-                <Modal
-                  title='Детали ингредиента'
-                  onClose={() => navigate(-1)}
-                >
+                <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
                   <IngredientDetails />
                 </Modal>
               }
@@ -97,10 +110,7 @@ const App = () => {
             <Route
               path='/feed/:number'
               element={
-                <Modal
-                  title='Информация о заказе'
-                  onClose={() => navigate(-1)}
-                >
+                <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
                   <OrderInfo />
                 </Modal>
               }
@@ -108,10 +118,7 @@ const App = () => {
             <Route
               path='/profile/orders/:number'
               element={
-                <Modal
-                  title='Информация о заказе'
-                  onClose={() => navigate(-1)}
-                >
+                <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
                   <ProtectedRoute>
                     <OrderInfo />
                   </ProtectedRoute>

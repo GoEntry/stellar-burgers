@@ -25,12 +25,12 @@ export const Register: FC = () => {
   };
 
   if (isAuth) {
-    return <Navigate to="/" replace />;
+    return <Navigate to='/' replace />;
   }
 
   return (
     <RegisterUI
-      errorText=""
+      errorText=''
       email={email}
       userName={userName}
       password={password}

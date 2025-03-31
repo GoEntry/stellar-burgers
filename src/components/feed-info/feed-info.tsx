@@ -3,7 +3,11 @@ import { TOrder } from '@utils-types';
 import { FeedInfoUI } from '../ui/feed-info';
 import { useSelector, useDispatch } from '../../services/store';
 import { fetchIngredients } from '../../services/ingredientsSlice';
-import { selectFeed, selectTotals, selectUserOrders } from '../../services/ordersSlice';
+import {
+  selectFeed,
+  selectTotals,
+  selectUserOrders
+} from '../../services/ordersSlice';
 
 const getOrders = (orders: TOrder[], status: string): number[] =>
   orders

@@ -17,7 +17,7 @@ export const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     return <Preloader />;
   }
   if (!user) {
-    return <Navigate replace to="/login" state={{ from: location }} />;
+    return <Navigate replace to='/login' state={{ from: location }} />;
   }
   return children;
 };

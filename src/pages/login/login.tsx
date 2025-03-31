@@ -4,7 +4,6 @@ import { LoginUI } from '@ui-pages';
 import { selectAuthStatus, login } from '../../services/authSlice';
 import { useDispatch, useSelector } from '../../services/store';
 
-
 export const Login: FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

@@ -5,7 +5,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { selectConstructor, clearAll } from '../../services/constructorSlice';
 import { selectUser } from '../../services/authSlice';
-import { createOrder, selectCurrentOrder, resetCurrent, selectLoading } from '../../services/ordersSlice';
+import {
+  createOrder,
+  selectCurrentOrder,
+  resetCurrent,
+  selectLoading
+} from '../../services/ordersSlice';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -39,7 +44,8 @@ export const BurgerConstructor: FC = () => {
   const price = useMemo(
     () =>
       (burgerComponents.bun ? burgerComponents.bun.price * 2 : 0) +
-      (burgerComponents.ingredients || []).reduce( // Защита от undefined
+      (burgerComponents.ingredients || []).reduce(
+        // Защита от undefined
         (sum: number, item: TConstructorIngredient) => sum + item.price,
         0
       ),

@@ -4,7 +4,12 @@ import { Preloader } from '../ui/preloader';
 import { OrderInfoUI } from '../ui/order-info';
 import { TIngredient } from '@utils-types';
 import { useSelector, useDispatch } from '../../services/store';
-import { fetchOrderByNumber, selectFeed, selectUserOrders, selectCurrentOrder } from '../../services/ordersSlice';
+import {
+  fetchOrderByNumber,
+  selectFeed,
+  selectUserOrders,
+  selectCurrentOrder
+} from '../../services/ordersSlice';
 import { selectIngredients } from '../../services/ingredientsSlice';
 
 export const OrderInfo: FC = () => {
@@ -34,8 +39,9 @@ export const OrderInfo: FC = () => {
 
   // Мемоизация данных для отображения
   const orderInfo = useMemo(() => {
-    const targetOrder = allOrders.find((order) => order.number === id) || currentOrder;
-    if (!targetOrder || !ingredients.length) return null
+    const targetOrder =
+      allOrders.find((order) => order.number === id) || currentOrder;
+    if (!targetOrder || !ingredients.length) return null;
     const date = new Date(targetOrder.createdAt);
     type TIngredientsWithCount = {
       [key: string]: TIngredient & { count: number };

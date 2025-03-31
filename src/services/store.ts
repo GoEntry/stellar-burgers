@@ -1,4 +1,8 @@
-import { TypedUseSelectorHook, useDispatch as dispatchHook, useSelector as selectorHook } from 'react-redux';
+import {
+  TypedUseSelectorHook,
+  useDispatch as dispatchHook,
+  useSelector as selectorHook
+} from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { ingredientsSlice } from './ingredientsSlice';
 import { authSlice } from './authSlice';
@@ -9,7 +13,7 @@ export const rootReducer = combineReducers({
   [ingredientsSlice.name]: ingredientsSlice.reducer,
   [authSlice.name]: authSlice.reducer,
   [constructorSlice.name]: constructorSlice.reducer,
-  [ordersSlice.name]: ordersSlice.reducer,
+  [ordersSlice.name]: ordersSlice.reducer
 });
 
 export const store = configureStore({

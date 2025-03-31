@@ -22,7 +22,7 @@ export const Profile: FC = () => {
   }, [user]);
 
   // Проверка изменений в форме
-  const isFormChanged = 
+  const isFormChanged =
     formValue.name !== user?.name ||
     formValue.email !== user?.email ||
     !!formValue.password;
@@ -31,11 +31,13 @@ export const Profile: FC = () => {
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     if (isFormChanged) {
-      profileDispatch(updateUser({
-        name: formValue.name,
-        email: formValue.email,
-        password: formValue.password
-      }));
+      profileDispatch(
+        updateUser({
+          name: formValue.name,
+          email: formValue.email,
+          password: formValue.password
+        })
+      );
     }
   };
 
@@ -53,7 +55,7 @@ export const Profile: FC = () => {
 
   // Обновление состояния формы
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValue(prev => ({
+    setFormValue((prev) => ({
       ...prev,
       [e.target.name]: e.target.value
     }));

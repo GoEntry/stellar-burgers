@@ -1,6 +1,14 @@
 import { createAsyncThunk, createSlice, AnyAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
-import { getUserApi, loginUserApi, logoutApi, registerUserApi, updateUserApi, TLoginData, TRegisterData } from '@api';
+import {
+  getUserApi,
+  loginUserApi,
+  logoutApi,
+  registerUserApi,
+  updateUserApi,
+  TLoginData,
+  TRegisterData
+} from '@api';
 import { deleteCookie, setCookie } from '../utils/cookie';
 
 type TAuthState = {
@@ -21,7 +29,9 @@ const initialState: TAuthState = {
 
 const handleAuthSuccess = (
   state: TAuthState,
-  action: { payload: { user: TUser; accessToken: string; refreshToken: string } }
+  action: {
+    payload: { user: TUser; accessToken: string; refreshToken: string };
+  }
 ) => {
   state.user = action.payload.user;
   state.isAuthenticated = true;
