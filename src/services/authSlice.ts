@@ -1,3 +1,4 @@
+//authSlice
 import { createAsyncThunk, createSlice, AnyAction } from '@reduxjs/toolkit';
 import { TUser } from '@utils-types';
 import {
@@ -30,25 +31,23 @@ const initialState: TAuthState = {
 const handleAuthSuccess = (
   state: TAuthState,
   action: {
-    payload: { user: TUser; accessToken: string; refreshToken: string };
+    payload: { user: TUser };
   }
 ) => {
   state.user = action.payload.user;
   state.isAuthenticated = true;
   state.isAuthChecked = true;
   state.loading = false;
-  setCookie('accessToken', action.payload.accessToken);
-  localStorage.setItem('refreshToken', action.payload.refreshToken);
 };
 
 export const register = createAsyncThunk(
   'auth/register',
   async (data: TRegisterData) => {
     const response = await registerUserApi(data);
+    setCookie('accessToken', response.accessToken);
+    localStorage.setItem('refreshToken', response.refreshToken);
     return {
-      user: response.user,
-      accessToken: response.accessToken,
-      refreshToken: response.refreshToken
+      user: response.user
     };
   }
 );
@@ -57,19 +56,22 @@ export const login = createAsyncThunk(
   'auth/login',
   async (data: TLoginData) => {
     const response = await loginUserApi(data);
+    setCookie('accessToken', response.accessToken);
+    localStorage.setItem('refreshToken', response.refreshToken);
     return {
-      user: response.user,
-      accessToken: response.accessToken,
-      refreshToken: response.refreshToken
+      user: response.user
     };
   }
 );
 
 export const logOut = createAsyncThunk('auth/logout', async () => {
   await logoutApi();
+  deleteCookie('accessToken');
+  localStorage.removeItem('refreshToken');
   return true;
 });
 
+// Остальной код остается без изменений
 export const fetchUser = createAsyncThunk('auth/fetch', getUserApi);
 
 export const updateUser = createAsyncThunk(
@@ -103,8 +105,6 @@ export const authSlice = createSlice({
         state.isAuthenticated = false;
         state.isAuthChecked = true;
         state.loading = false;
-        deleteCookie('accessToken');
-        localStorage.removeItem('refreshToken');
       })
       .addMatcher(
         (action: AnyAction) => action.type.endsWith('/pending'),
@@ -118,7 +118,7 @@ export const authSlice = createSlice({
         (state, action) => {
           state.loading = false;
           state.isAuthChecked = true;
-          //state.error = action.error?.message || 'Unknown error';
+          // state.error = action.error?.message || 'Unknown error';
         }
       );
   },

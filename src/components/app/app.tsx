@@ -36,6 +36,9 @@ const App = () => {
     appDispatch(fetchIngredients());
   }, [appDispatch]);
 
+  // Функция для закрытия модального окна
+  const handleModalClose = () => navigate(-1);
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -90,6 +93,14 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+          path='/profile/orders/:number'
+          element={
+            <ProtectedRoute>
+              <OrderInfo />
+            </ProtectedRoute>
+          }
+        />
         <Route path='*' element={<NotFound404 />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
         <Route path='/feed/:number' element={<OrderInfo />} />
@@ -102,7 +113,7 @@ const App = () => {
             <Route
               path='/ingredients/:id'
               element={
-                <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
+                <Modal title='Детали ингредиента' onClose={handleModalClose}>
                   <IngredientDetails />
                 </Modal>
               }
@@ -110,7 +121,7 @@ const App = () => {
             <Route
               path='/feed/:number'
               element={
-                <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
+                <Modal title='Информация о заказе' onClose={handleModalClose}>
                   <OrderInfo />
                 </Modal>
               }
@@ -118,10 +129,8 @@ const App = () => {
             <Route
               path='/profile/orders/:number'
               element={
-                <Modal title='Информация о заказе' onClose={() => navigate(-1)}>
-                  <ProtectedRoute>
-                    <OrderInfo />
-                  </ProtectedRoute>
+                <Modal title='Информация о заказе' onClose={handleModalClose}>
+                  <OrderInfo />
                 </Modal>
               }
             />

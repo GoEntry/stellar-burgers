@@ -1,5 +1,4 @@
 import { FC, SyntheticEvent, useState } from 'react';
-import { Navigate } from 'react-router-dom';
 import { LoginUI } from '@ui-pages';
 import { selectAuthStatus, login } from '../../services/authSlice';
 import { useDispatch, useSelector } from '../../services/store';
@@ -9,10 +8,6 @@ export const Login: FC = () => {
   const [password, setPassword] = useState('');
   const isAuth = useSelector(selectAuthStatus);
   const loginDispatch = useDispatch();
-
-  if (isAuth) {
-    return <Navigate to='/' replace />;
-  }
 
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
