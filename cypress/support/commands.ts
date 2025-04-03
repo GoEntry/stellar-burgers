@@ -33,13 +33,23 @@ Cypress.Commands.add('login', (email: string, password: string) => {
 
 // Команда для перетаскивания ингредиента в конструктор
 Cypress.Commands.add('dragAndDrop', (ingredientName: string) => {
+  // Находим ингредиент по имени
   cy.contains(ingredientName)
     .trigger('dragstart')
     .trigger('dragleave');
     
-  cy.get('[class*=burger_constructor]')
-    .trigger('dragover')
-    .trigger('drop');
+  // Если это булка, ищем "Выберите булки", иначе "Выберите начинку"
+  if (ingredientName.includes('булка')) {
+    cy.contains('Выберите булки')
+      .parent()
+      .trigger('dragover')
+      .trigger('drop');
+  } else {
+    cy.contains('Выберите начинку')
+      .parent()
+      .trigger('dragover')
+      .trigger('drop');
+  }
 });
 
 // Для корректной работы TypeScript
